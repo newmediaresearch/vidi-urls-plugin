@@ -2,7 +2,7 @@
 
 # Need to modify the base template:
 # vi /opt/cantemo/portal/portal_themes/core/templates/base.html
-# {% if vidi_urls %}
+# {% if vidi_urls and request.user.is_superuser %}
 #     <div style="padding: 5px; background-color: black; position: fixed; bottom: 0px; z-index: 100;">
 #     {% for url in vidi_urls %}
 #         <a style="color: white;" href="{{ url }}" target="_blank">{{ url }}</a><br />
