@@ -57,9 +57,10 @@ class VidiURLsContext(Plugin):
             base_url = settings.VIDISPINE_URL
         vidi_base = '{0}:{1}'.format(base_url, settings.VIDISPINE_PORT)
 
-        data = path.join(path.dirname(path.realpath(__file__)), 'lookup.json')
-        with open(data) as data_file:
-            lookup_urls = json.load(data_file)
+        current_dir = path.dirname(path.realpath(__file__))
+        url_lookup_file = path.join(current_dir, 'url_lookup.json')
+        with open(url_lookup_file) as f:
+            lookup_urls = json.load(f)
 
         extra_context['vidi_urls'] = []
         for portal_url, vidi_urls in lookup_urls.iteritems():
