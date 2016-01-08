@@ -7,7 +7,9 @@ from urlparse import urljoin
 from django.conf import settings
 
 from portal.pluginbase.core import Plugin, implements
-from portal.generic.plugin_interfaces import IContextProcessor, IAppRegister
+from portal.generic.plugin_interfaces import (
+    IContextProcessor, IAppRegister, IPluginBlock
+)
 
 from . import __version__
 
@@ -97,5 +99,19 @@ class VidiURLsContext(Plugin):
         return self.context
 
 
+class VidiURLsHtml(Plugin):
+    implements(IPluginBlock)
+
+    def __init__(self):
+        self.name = "BaseJS"
+        self.plugin_guid = 'FBFC6B5B-1914-4CBA-8418-A06807189478'
+
+    def return_string(self, tagname, *args):
+        return {
+            'guid': self.plugin_guid,
+            'template': 'vidi_urls/urls.html'
+        }
+
 VidiURLsPluginRegister()
 VidiURLsContext()
+VidiURLsHtml()
