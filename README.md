@@ -18,3 +18,7 @@ Put vidi_urls folder into `/opt/cantemo/portal/portal/plugins/`
 * Specific storage URL does not match
 * /vs/index/ and /search/last/10/ do not hit the plugin
 * Stop part matches e.g. /user/ is matched with /user/admin/
+
+
+#### Example Screen shot
+![Example screen shot](http://i.imgur.com/ylD4i02.png?1?raw=true "Example screen shot")
