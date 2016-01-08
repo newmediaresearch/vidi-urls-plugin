@@ -4,10 +4,10 @@ Quick, relevant links to Vidispine from within Portal.
 
 
 ## Install
-Put vidi_urls folder into `/opt/cantemo/portal/portal/plugins/`
-
-`$ supervisorctl restart portal`
-
+```
+$ chmod +x setup.sh
+$ sudo ./setup.sh
+```
 
 ## ToDo
 * Write tests
