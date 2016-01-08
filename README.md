@@ -4,6 +4,9 @@ Quick, relevant links to Vidispine from within Portal.
 
 
 ## Install
+* Set the `Domain name` in the System settings
+* chmod setup.sh
+* Run setup.sh
 ```
 $ chmod +x setup.sh
 $ sudo ./setup.sh
