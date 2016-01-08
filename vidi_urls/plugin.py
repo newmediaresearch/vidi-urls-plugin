@@ -2,9 +2,7 @@
     Copyright 2015 NMR. All Rights Reserved
 """
 import re
-import json
 import logging
-from os import path
 from urlparse import urljoin
 from django.conf import settings
 
@@ -14,6 +12,33 @@ from portal.generic.plugin_interfaces import IContextProcessor, IAppRegister
 from . import __version__
 
 log = logging.getLogger(__name__)
+# Use global not .json file for speed
+LOOKUP_URLS = {
+    "/search/last/10/": ["/API/item/"],
+    "/vs/item/(.*)/": ["/API/item/{0}/", "/API/item/{0}/metadata/", "/API/item/{0}/shape/", "/API/item/{0}/access/", "/API/item/{0}/?content=thumbnail,poster", "/API/item/{0}/shape/version"],
+    "/vs/savedsearches/": ["/API/library;updateMode=TRANSIENT/"],
+    "/vs/savedsearches/(.*)/": ["/API/collection/{0}/"],
+    "/vs/searchresults/?searchquery=&searchcollections=on": ["/API/collection/"],
+    "/vs/collections/(.*)/": ["/API/collection/{0}/"],
+    "/admin/": ["/API/version/"],
+    "/users/": ["/API/user/"],
+    "/users/(.*)/": ["/API/user/{0}/"],
+    "/groups/": ["/API/group/"],
+    "/groups/(.*)/": ["/API/group/{0}/", "/API/group/{0}/parents/", "/API/group/{0}/children/", "/API/group/{0}/users/"],
+    "/vs/metadatamanagement/": ["/API/metadata-field/field-group/"],
+    "/vs/exportlocations/": ["/API/export-location/"],
+    "/vs/exportlocations/(.*)/": ["/API/export-location/{0}/"],
+    "/vs/transcodeprofiles/": ["/API/shape-tag/"],
+    "/vs/transcodeprofiles/(.*)/": ["/API/shape-tag/{0}/", "/API/shape-tag/{0}/script/"],
+    "/vs/storage/": ["/API/storage/"],
+    "/vs/storage/settings?storage_id=(.*)&storage_group_id=": ["/API/storage/{0}/"],
+    "/vs/jobs/": ["/API/job;user=false/", "/API/task-definition"],
+    "/vs/job/(.*)/": ["/API/job/{0}/", "/API/task-definition"],
+    "/vs/index/": ["/API/reindex/item/", "/API/reindex/collection/", "/API/reindex/acl/"],
+    "/logreport/": ["/LogReport/"],
+    "/rules/access/metadata/": ["/API/library;updateMode=REPLACE"],
+    "/audittool/": ["/API/log?starttime=2010-01-01T00:00:00&endtime=2020-12-31T23:59:59"]
+}
 
 
 class VidiURLsPluginRegister(Plugin):
@@ -57,13 +82,8 @@ class VidiURLsContext(Plugin):
             base_url = settings.VIDISPINE_URL
         vidi_base = '{0}:{1}'.format(base_url, settings.VIDISPINE_PORT)
 
-        current_dir = path.dirname(path.realpath(__file__))
-        url_lookup_file = path.join(current_dir, 'url_lookup.json')
-        with open(url_lookup_file) as f:
-            lookup_urls = json.load(f)
-
         extra_context['vidi_urls'] = []
-        for portal_url, vidi_urls in lookup_urls.iteritems():
+        for portal_url, vidi_urls in LOOKUP_URLS.iteritems():
             match = re.match(portal_url, request_path)
             if match:
                 for url in vidi_urls:
@@ -75,6 +95,7 @@ class VidiURLsContext(Plugin):
                     extra_context['vidi_urls'].append(urljoin(vidi_base, url))
 
         return self.context
+
 
 VidiURLsPluginRegister()
 VidiURLsContext()
