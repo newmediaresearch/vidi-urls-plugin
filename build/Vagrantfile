@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+$docker_setup = <<SCRIPT
+if [ ! -f /usr/bin/docker ]; then
+sudo tee /etc/yum.repos.d/docker.repo <<-'EOF'
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF
+sudo yum install -y docker-engine
+fi
+sudo service docker start
+cd /srv/shared/build
+sudo WORKSPACE=/srv/shared sh build.sh
+SCRIPT
+
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "nmr_centos_7"
+  config.vm.box_check_update = false
+  config.vm.define "build"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "521"
+    vb.linked_clone = true
+  end
+
+
+  config.vm.synced_folder "../", "/srv/shared", create: true, :mount_options => ["dmode=777","fmode=777"]
+
+  config.vm.provision "shell" do |s|
+    s.inline = $docker_setup
+  end
+
+
+end
