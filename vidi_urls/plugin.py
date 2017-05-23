@@ -8,7 +8,7 @@ from django.conf import settings
 
 from portal.pluginbase.core import Plugin, implements
 from portal.generic.plugin_interfaces import (
-    IContextProcessor, IAppRegister, IPluginBlock
+    IAppRegister, IPluginBlock
 )
 
 from . import __version__
@@ -61,22 +61,18 @@ class VidiURLsPluginRegister(Plugin):
         }
 
 
-class VidiURLsContext(Plugin):
-    implements(IContextProcessor)
+class VidiURLsHtml(Plugin):
+    implements(IPluginBlock)
 
     def __init__(self):
-        self.name = "Vidi URLs Context"
+        self.name = "BaseJS"
+        self.plugin_guid = 'FBFC6B5B-1914-4CBA-8418-A06807189478'
 
-    def __call__(self, context, class_object):
-        self.context = context
-        self.class_object = class_object
-        return self.process_context()
-
-    def process_context(self):
+    def return_string(self, tagname, *args):
         # Fails if imported at top with: Error: cannot import name utils
         from django.contrib.sites.models import Site
-        extra_context = self.context.dicts[len(self.context.dicts)-1]
-        request_path = self.context['request'].path
+        context = args[1]
+        request_path = context['request'].path
 
         if settings.VIDISPINE_URL in ['http://127.0.0.1', 'http://localhost']:
             base_url = 'http://{0}'.format(Site.objects.get_current().domain)
@@ -84,7 +80,7 @@ class VidiURLsContext(Plugin):
             base_url = settings.VIDISPINE_URL
         vidi_base = '{0}:{1}'.format(base_url, settings.VIDISPINE_PORT)
 
-        extra_context['vidi_urls'] = []
+        returned_vidi_urls = []
         for portal_url, vidi_urls in LOOKUP_URLS.iteritems():
             match = re.match(portal_url, request_path)
             if match:
@@ -94,24 +90,14 @@ class VidiURLsContext(Plugin):
                         url = url.format(match.group(1))
                     except IndexError:
                         pass
-                    extra_context['vidi_urls'].append(urljoin(vidi_base, url))
+                    returned_vidi_urls.append(urljoin(vidi_base, url))
 
-        return self.context
-
-
-class VidiURLsHtml(Plugin):
-    implements(IPluginBlock)
-
-    def __init__(self):
-        self.name = "BaseJS"
-        self.plugin_guid = 'FBFC6B5B-1914-4CBA-8418-A06807189478'
-
-    def return_string(self, tagname, *args):
         return {
             'guid': self.plugin_guid,
-            'template': 'vidi_urls/urls.html'
+            'template': 'vidi_urls/urls.html',
+            'context': {'vidi_urls': returned_vidi_urls},
         }
 
+
 VidiURLsPluginRegister()
-VidiURLsContext()
 VidiURLsHtml()
