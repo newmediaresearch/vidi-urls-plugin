@@ -14,6 +14,4 @@ Quick, relevant links to Vidispine from within Portal.
 
 ## Bugs
 * Specific storage URL does not match
-* /vs/index/ and /search/last/10/ do not hit the plugin
-* Stop part matches e.g. /user/ is matched with /user/admin/
 * URLs don't show in metadata management
