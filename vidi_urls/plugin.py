@@ -21,7 +21,9 @@ LOOKUP_URLS = {
     "/vs/savedsearches/$": ["/API/library;updateMode=TRANSIENT/"],
     "/vs/savedsearches/(.*)/": ["/API/collection/{0}/"],
     "/vs/searchresults/?searchquery=&searchcollections=on": ["/API/collection/"],  # NOQA
-    "/vs/collections/#/": ["/API/collection/"],
+    "/collections/#/$": ["/API/collection/"],
+    "/collections/#/collection/(.*)": ["/API/collection/{0}/"],
+    "/vs/collections/": ["/API/collection/"],
     "/vs/collections/(.*)/": ["/API/collection/{0}/"],
     "/admin/": ["/API/version/"],
     "/users/$": ["/API/user/"],

@@ -13,5 +13,5 @@ Quick, relevant links to Vidispine from within Portal.
 
 
 ## Bugs
-* Specific storage URL does not match
+* Can't match inside collection path (due to it using React)
 * URLs don't show in metadata management
