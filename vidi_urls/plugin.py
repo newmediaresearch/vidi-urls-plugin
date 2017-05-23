@@ -74,6 +74,9 @@ class VidiURLsHtml(Plugin):
         from django.contrib.sites.models import Site
         context = args[1]
         request_path = context['request'].path
+        if context['request'].META.get('QUERY_STRING', ''):
+            query_string = context['request'].META['QUERY_STRING']
+            request_path = '{0}?{1}'.format(request_path, query_string)
 
         if settings.VIDISPINE_URL in ['http://127.0.0.1', 'http://localhost']:
             base_url = 'http://{0}'.format(Site.objects.get_current().domain)
@@ -83,7 +86,10 @@ class VidiURLsHtml(Plugin):
 
         returned_vidi_urls = []
         for portal_url, vidi_urls in LOOKUP_URLS.iteritems():
-            match = re.match(portal_url, request_path)
+            # Horrible workaround to stop regex clash with ?
+            match = re.match(
+                portal_url.replace('?', '_'), request_path.replace('?', '_')
+            )
             if match:
                 for url in vidi_urls:
                     # If the URL has a regex match / format
@@ -91,6 +97,10 @@ class VidiURLsHtml(Plugin):
                         url = url.format(match.group(1))
                     except IndexError:
                         pass
+                    else:
+                        # Part of the query string may be left behind
+                        if '&' in url:
+                            url, __ = url.split('&', 1)
                     returned_vidi_urls.append(urljoin(vidi_base, url))
 
         return {
