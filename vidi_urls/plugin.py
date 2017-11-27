@@ -37,7 +37,7 @@ LOOKUP_URLS = {
     "/vs/transcodeprofiles/$": ["/API/shape-tag/"],
     "/vs/transcodeprofiles/(.*)/": ["/API/shape-tag/{0}/", "/API/shape-tag/{0}/script/"],  # NOQA
     "/vs/storage/$": ["/API/storage/"],
-    "/vs/storage/settings?storage_id=(.*)": ["/API/storage/{0}/"],  # NOQA
+    "/vs/storage/settings?storage_id=(.*)": ["/API/storage/{0}/", "/API/storage/{0}/method/"],  # NOQA
     "/vs/jobs/": ["/API/job;user=false/", "/API/task-definition"],
     "/vs/job/(.*)/": ["/API/job/{0}/", "/API/task-definition"],
     "/vs/index/": ["/API/reindex/item/", "/API/reindex/collection/", "/API/reindex/acl/"],  # NOQA
