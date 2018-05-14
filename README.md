@@ -1,6 +1,6 @@
 # Vidi URLs Plugin
 
-Quick, relevant links to Vidispine from within Portal.
+Quick and relevant links to Vidispine from within Portal.
 
 
 ## Install
