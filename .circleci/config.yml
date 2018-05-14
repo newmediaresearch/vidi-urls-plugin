@@ -5,12 +5,6 @@ jobs:
       - image: circleci/python:2.7.14
     steps:
       - checkout
-      - run:
-          name: Check for pdb
-          command: |
-            if grep -r "pdb.set_trace" ./vidi_urls/ ; then
-              exit 1
-            fi
       - restore_cache:
           key: deps-{{ .Branch }}-vidi_urls
       - run:
@@ -20,6 +14,10 @@ jobs:
             virtualenv ./env/vidi_urls
             source ./env/vidi_urls/bin/activate
             pip install flake8
+            pip install pep8-naming
+            pip install flake8-debugger
+            pip install flake8-module-imports
+            pip install flake8-deprecated
       - run:
           name: Run flake8
           command: |
