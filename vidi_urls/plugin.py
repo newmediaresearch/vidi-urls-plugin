@@ -25,8 +25,8 @@ LOOKUP_URLS = {
     "/collections/#/collection/(.*)": ["/API/collection/{0}/"],
     "/vs/collections/": ["/API/collection/"],
     "/vs/collections/(.*)/": ["/API/collection/{0}/"],
-    "/admin/": ["/API/version/", "/API/resource", "/API/configuration/properties/"],
-    "/system/": ["/API/version/", "/API/resource", "/API/configuration/properties/"],
+    "/admin/": ["/API/version/", "/API/resource", "/API/configuration/properties/"],  # NOQA
+    "/system/": ["/API/version/", "/API/resource", "/API/configuration/properties/"],  # NOQA
     "/users/$": ["/API/user/"],
     "/users/(.*)/": ["/API/user/{0}/"],
     "/groups/$": ["/API/group/"],

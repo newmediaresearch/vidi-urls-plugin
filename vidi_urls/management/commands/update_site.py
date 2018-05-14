@@ -20,7 +20,6 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
-        
         domain = options.get('domain')
         name = options.get('name')
         sites = Site.objects.all()
@@ -31,7 +30,7 @@ class Command(BaseCommand):
         if not domain and not name:
             error = 'No domain or name specified'
             raise CommandError(error)
-        
+
         site = sites[0]
         if domain:
             site.domain = domain
