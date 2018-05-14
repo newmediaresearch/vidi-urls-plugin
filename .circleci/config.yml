@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:2.7.14
+    steps:
+      - checkout
+      - run:
+          name: Check for pdb
+          command: |
+            if grep -r "pdb.set_trace" ./vidi_urls/ ; then
+              exit 1
+            fi
+      - restore_cache:
+          key: deps-{{ .Branch }}-vidi_urls
+      - run:
+          name: Install flake8
+          command: |
+            mkdir -p ./env
+            virtualenv ./env/vidi_urls
+            source ./env/vidi_urls/bin/activate
+            pip install flake8
+      - run:
+          name: Run flake8
+          command: |
+            ./env/vidi_urls/bin/flake8 vidi_urls
+      - save_cache:
+          key: deps-{{ .Branch }}-vidi_urls
+          paths:
+            - "./env"
