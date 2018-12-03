@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 # Use global not .json file for speed
 LOOKUP_URLS = {
     "/search/": ["/API/item/"],
-    "/vs/item/(.*)/": ["/API/item/{0}/", "/API/item/{0}/metadata/", "/API/item/{0}/shape/", "/API/item/{0}/access/", "/API/item/{0}/?content=thumbnail,poster", "/API/item/{0}/shape/version"],  # NOQA
+    "/vs/item/(.*)/": ["/API/item/{0}/", "/API/item/{0}/?content=metadata,shape", "/API/item/{0}/metadata/", "/API/item/{0}/shape/", "/API/item/{0}/access/", "/API/item/{0}/?content=thumbnail,poster", "/API/item/{0}/shape/version"],  # NOQA
     "/vs/savedsearches/$": ["/API/library;updateMode=TRANSIENT/"],
     "/vs/savedsearches/(.*)/": ["/API/collection/{0}/"],
     "/vs/searchresults/?searchquery=&searchcollections=on": ["/API/collection/"],  # NOQA
