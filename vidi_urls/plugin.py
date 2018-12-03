@@ -39,7 +39,7 @@ LOOKUP_URLS = {
     "/vs/storage/$": ["/API/storage/"],
     "/vs/storage/settings?storage_id=(.*)": ["/API/storage/{0}/", "/API/storage/{0}/method/"],  # NOQA
     "/vs/jobs/": ["/API/job;user=false/", "/API/task-definition"],
-    "/vs/job/(.*)/": ["/API/job/{0}/", "/API/task-definition"],
+    "/vs/job/(.*)/": ["/API/job/{0}/?metadata=true", "/API/task-definition"],
     "/vs/index/": ["/API/reindex/item/", "/API/reindex/collection/", "/API/reindex/acl/"],  # NOQA
     "/logreport/": ["/LogReport/"],
     "/rules/access/metadata/": ["/API/library;updateMode=REPLACE"],
