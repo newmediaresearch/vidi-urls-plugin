@@ -1,8 +1,8 @@
 {% if vidi_urls and request.user.is_superuser %}
-    <div id="vidi-urls" style="padding: 5px; background-color: black; position: fixed; bottom: 0px; z-index: 100;">
+    <div id="vidi-urls" style="font-size: 0.9rem; padding: 10px; background-color: black; position: fixed; bottom: 0px; z-index: 100;">
     <a style="color: white; cursor: pointer;float: right; padding-left: 20px;" onclick="$('#vidi-urls').hide();">X</a>
      {% for url in vidi_urls %}
-         <a style="color: white;" href="{{ url }}" target="_blank">{{ url }}</a><br />
+         <a style="color: white; display: block" href="{{ url }}" target="_blank">{{ url }}</a>
      {% endfor %}
      </div>
  {% endif %}

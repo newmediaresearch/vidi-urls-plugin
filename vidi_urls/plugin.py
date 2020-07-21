@@ -3,7 +3,11 @@
 """
 import re
 import logging
-from urlparse import urljoin
+try:
+    from urlparse import urljoin
+except ImportError:
+    from urllib.parse import urljoin
+
 from django.conf import settings
 
 from portal.pluginbase.core import Plugin, implements
@@ -86,9 +90,12 @@ class VidiURLsHtml(Plugin):
         else:
             base_url = settings.VIDISPINE_URL
         vidi_base = '{0}:{1}'.format(base_url, settings.VIDISPINE_PORT)
-
         returned_vidi_urls = []
-        for portal_url, vidi_urls in LOOKUP_URLS.iteritems():
+        try:
+            urls = LOOKUP_URLS.iteritems()
+        except AttributeError:
+            urls = LOOKUP_URLS.items()
+        for portal_url, vidi_urls in urls:
             # Horrible workaround to stop regex clash with ?
             match = re.match(
                 portal_url.replace('?', '_'), request_path.replace('?', '_')
